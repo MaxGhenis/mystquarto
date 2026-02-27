@@ -34,6 +34,9 @@ _EQ_RE = re.compile(r"\{eq\}`([^`]+)`")
 # {doc}`path`
 _DOC_RE = re.compile(r"\{doc\}`([^`]+)`")
 
+# Regular markdown links to .md files: [text](path.md) -> [text](path.qmd)
+_MD_LINK_RE = re.compile(r"(\[[^\]]*\]\([^)]*?)\.md(\))")
+
 # Admonition types that map directly
 _ADMONITION_TYPES = {"note", "warning", "tip", "important", "caution"}
 
@@ -121,6 +124,9 @@ def transform_inline(line: str) -> str:
     result = _REF_RE.sub(_replace_ref, result)
     result = _EQ_RE.sub(_replace_eq, result)
     result = _DOC_RE.sub(_replace_doc, result)
+
+    # Rewrite remaining .md links to .qmd
+    result = _MD_LINK_RE.sub(r"\1.qmd\2", result)
 
     return result
 
@@ -273,7 +279,9 @@ def _transform_code_cell(frame: DirectiveFrame) -> list[str]:
 def _transform_figure(frame: DirectiveFrame) -> list[str]:
     """Transform figure directive to Quarto image syntax."""
     path = frame.argument.strip()
+    # Apply inline transforms to caption text (may contain {eval}, {cite}, etc.)
     caption = " ".join(line.strip() for line in frame.body_lines if line.strip())
+    caption = transform_inline(caption)
     name = frame.options.get("name", "")
     width = frame.options.get("width", "")
 
