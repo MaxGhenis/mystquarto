@@ -67,9 +67,18 @@ def discover_files(directory: str, direction: Direction) -> list[str]:
 
     # Directories to skip
     skip_dirs = {
-        "_build", ".git", ".hg", "__pycache__", "node_modules",
-        ".venv", "venv", ".tox", ".mypy_cache", ".pytest_cache",
-        "_site", ".quarto",
+        "_build",
+        ".git",
+        ".hg",
+        "__pycache__",
+        "node_modules",
+        ".venv",
+        "venv",
+        ".tox",
+        ".mypy_cache",
+        ".pytest_cache",
+        "_site",
+        ".quarto",
     }
 
     files: list[str] = []
@@ -237,9 +246,7 @@ def convert_directory(
 
     # Handle single file path
     if os.path.isfile(input_dir):
-        return _convert_single_file_path(
-            input_dir, output_dir, direction, dry_run
-        )
+        return _convert_single_file_path(input_dir, output_dir, direction, dry_run)
 
     # Determine output directory
     if in_place:
@@ -257,7 +264,9 @@ def convert_directory(
     all_files = discover_files(input_dir, direction)
 
     # Separate config files from markdown files
-    config_name = _MYST_CONFIG if direction == Direction.MYST_TO_QUARTO else _QUARTO_CONFIG
+    config_name = (
+        _MYST_CONFIG if direction == Direction.MYST_TO_QUARTO else _QUARTO_CONFIG
+    )
     config_files = [f for f in all_files if os.path.basename(f) == config_name]
     md_files = [f for f in all_files if os.path.basename(f) != config_name]
 
@@ -323,14 +332,21 @@ def _convert_single_file_path(
     return [result]
 
 
-def _copy_assets(
-    input_dir: str, output_dir: str, direction: Direction
-) -> None:
+def _copy_assets(input_dir: str, output_dir: str, direction: Direction) -> None:
     """Copy non-markdown assets (bib, images, static dirs) to output."""
     skip_dirs = {
-        "_build", ".git", ".hg", "__pycache__", "node_modules",
-        ".venv", "venv", ".tox", ".mypy_cache", ".pytest_cache",
-        "_site", ".quarto",
+        "_build",
+        ".git",
+        ".hg",
+        "__pycache__",
+        "node_modules",
+        ".venv",
+        "venv",
+        ".tox",
+        ".mypy_cache",
+        ".pytest_cache",
+        "_site",
+        ".quarto",
     }
     md_exts = _MYST_EXTENSIONS | _QUARTO_EXTENSIONS
     config_names = {_MYST_CONFIG, _QUARTO_CONFIG}

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 
 import yaml
 
@@ -100,7 +99,9 @@ def myst_to_quarto_frontmatter(fm: dict) -> dict:
     for key, value in fm.items():
         # kernelspec -> jupyter
         if key == "kernelspec":
-            kernel_name = value.get("name", "python3") if isinstance(value, dict) else value
+            kernel_name = (
+                value.get("name", "python3") if isinstance(value, dict) else value
+            )
             result["jupyter"] = kernel_name
             continue
 
@@ -156,10 +157,14 @@ def quarto_to_myst_frontmatter(fm: dict) -> dict:
     for key, value in fm.items():
         # jupyter -> kernelspec
         if key == "jupyter":
-            kernel_name = value if isinstance(value, str) else value.get("name", "python3")
+            kernel_name = (
+                value if isinstance(value, str) else value.get("name", "python3")
+            )
             result["kernelspec"] = {
                 "name": kernel_name,
-                "display_name": kernel_name.replace("python3", "Python 3").replace("ir", "R"),
+                "display_name": kernel_name.replace("python3", "Python 3").replace(
+                    "ir", "R"
+                ),
             }
             continue
 
@@ -184,9 +189,7 @@ def quarto_to_myst_frontmatter(fm: dict) -> dict:
         if key == "crossref":
             eq_prefix = value.get("eq-prefix") if isinstance(value, dict) else None
             if eq_prefix:
-                result["numbering"] = {
-                    "equation": {"template": eq_prefix}
-                }
+                result["numbering"] = {"equation": {"template": eq_prefix}}
             continue
 
         # Everything else passes through

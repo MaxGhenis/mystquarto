@@ -52,9 +52,7 @@ def _run_conversion(
             collector.error(error)
 
     # Report
-    converted_count = sum(
-        1 for r in results if not r.skipped and not r.errors
-    )
+    converted_count = sum(1 for r in results if not r.skipped and not r.errors)
     label = "Would convert" if dry_run else "Converted"
 
     if dry_run:
@@ -77,9 +75,7 @@ def _run_conversion(
 @click.option("--in-place", is_flag=True, help="Modify files in-place")
 @click.option("--config-only", is_flag=True, help="Only convert config files")
 @click.option("--no-config", is_flag=True, help="Skip config file conversion")
-@click.option(
-    "--dry-run", is_flag=True, help="Show what would change without writing"
-)
+@click.option("--dry-run", is_flag=True, help="Show what would change without writing")
 @click.option("--strict", is_flag=True, help="Treat warnings as errors")
 def myst2quarto(path, output, in_place, config_only, no_config, dry_run, strict):
     """Convert MyST markdown files to Quarto format."""
@@ -101,9 +97,7 @@ def myst2quarto(path, output, in_place, config_only, no_config, dry_run, strict)
 @click.option("--in-place", is_flag=True, help="Modify files in-place")
 @click.option("--config-only", is_flag=True, help="Only convert config files")
 @click.option("--no-config", is_flag=True, help="Skip config file conversion")
-@click.option(
-    "--dry-run", is_flag=True, help="Show what would change without writing"
-)
+@click.option("--dry-run", is_flag=True, help="Show what would change without writing")
 @click.option("--strict", is_flag=True, help="Treat warnings as errors")
 def quarto2myst(path, output, in_place, config_only, no_config, dry_run, strict):
     """Convert Quarto markdown files to MyST format."""
@@ -133,9 +127,7 @@ def main(ctx):
 @click.option("--in-place", is_flag=True, help="Modify files in-place")
 @click.option("--config-only", is_flag=True, help="Only convert config files")
 @click.option("--no-config", is_flag=True, help="Skip config file conversion")
-@click.option(
-    "--dry-run", is_flag=True, help="Show what would change without writing"
-)
+@click.option("--dry-run", is_flag=True, help="Show what would change without writing")
 @click.option("--strict", is_flag=True, help="Treat warnings as errors")
 def to_quarto(path, output, in_place, config_only, no_config, dry_run, strict):
     """Convert MyST markdown files to Quarto format."""
@@ -157,9 +149,7 @@ def to_quarto(path, output, in_place, config_only, no_config, dry_run, strict):
 @click.option("--in-place", is_flag=True, help="Modify files in-place")
 @click.option("--config-only", is_flag=True, help="Only convert config files")
 @click.option("--no-config", is_flag=True, help="Skip config file conversion")
-@click.option(
-    "--dry-run", is_flag=True, help="Show what would change without writing"
-)
+@click.option("--dry-run", is_flag=True, help="Show what would change without writing")
 @click.option("--strict", is_flag=True, help="Treat warnings as errors")
 def to_myst(path, output, in_place, config_only, no_config, dry_run, strict):
     """Convert Quarto markdown files to MyST format."""

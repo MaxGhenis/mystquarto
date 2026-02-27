@@ -32,9 +32,7 @@ _SEC_REF_RE = re.compile(r"(?<!\w)@(sec-[\w-]+)(?!\w)")
 # @key (bare citation, not email, not @fig/@eq/@tbl/@sec) -> {cite:t}`key`
 # Must NOT be preceded by a word character (to exclude emails).
 # Must NOT match @fig-*, @eq-*, @tbl-*, @sec-* (those are handled above).
-_BARE_CITE_RE = re.compile(
-    r"(?<!\w)@((?!fig-|eq-|tbl-|sec-)[\w][\w-]*)(?!\w)"
-)
+_BARE_CITE_RE = re.compile(r"(?<!\w)@((?!fig-|eq-|tbl-|sec-)[\w][\w-]*)(?!\w)")
 
 # [text](path.qmd) where link text matches the path stem -> {doc}`path`
 _DOC_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^\)]+\.qmd)\)")
@@ -64,9 +62,7 @@ _COLON_CLOSE_RE = re.compile(r"^(:{3,})\s*$")
 _BACKTICK_CLOSE_RE = re.compile(r"^(`{3,})\s*$")
 
 # Image/figure with attributes: ![alt](url){attrs}
-_IMG_ATTRS_RE = re.compile(
-    r"^!\[([^\]]*)\]\(([^)]+)\)\{([^}]+)\}\s*$"
-)
+_IMG_ATTRS_RE = re.compile(r"^!\[([^\]]*)\]\(([^)]+)\)\{([^}]+)\}\s*$")
 
 # Math block closing with label: $$ {#eq-id}
 _MATH_CLOSE_LABEL_RE = re.compile(r"^\$\$\s*\{#([\w-]+)\}\s*$")
@@ -248,9 +244,7 @@ def _build_code_cell(
     return lines
 
 
-def _build_admonition(
-    adm_type: str, title: str, body_lines: list[str]
-) -> list[str]:
+def _build_admonition(adm_type: str, title: str, body_lines: list[str]) -> list[str]:
     """Build a MyST admonition directive."""
     if title:
         lines = [f"```{{admonition}} {title}"]
@@ -325,9 +319,7 @@ def _parse_image_attrs(attr_str: str) -> dict[str, str]:
     return attrs
 
 
-def _build_figure_directive(
-    alt: str, url: str, attrs: dict[str, str]
-) -> list[str]:
+def _build_figure_directive(alt: str, url: str, attrs: dict[str, str]) -> list[str]:
     """Build a MyST figure directive from Quarto image with #id."""
     lines = [f"```{{figure}} {url}"]
     if "id" in attrs:
@@ -341,9 +333,7 @@ def _build_figure_directive(
     return lines
 
 
-def _build_image_directive(
-    alt: str, url: str, attrs: dict[str, str]
-) -> list[str]:
+def _build_image_directive(alt: str, url: str, attrs: dict[str, str]) -> list[str]:
     """Build a MyST image directive from Quarto image with width but no #id."""
     lines = [f"```{{image}} {url}"]
     if alt:
@@ -354,9 +344,7 @@ def _build_image_directive(
     return lines
 
 
-def _build_math_directive(
-    label: str, body_lines: list[str]
-) -> list[str]:
+def _build_math_directive(label: str, body_lines: list[str]) -> list[str]:
     """Build a MyST math directive from labeled $$ block."""
     lines = ["```{math}"]
     if label:

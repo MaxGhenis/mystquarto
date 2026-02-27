@@ -8,7 +8,6 @@ from click.testing import CliRunner
 
 from mystquarto.cli import main, myst2quarto, quarto2myst
 from mystquarto.convert import (
-    ConversionResult,
     Direction,
     convert_directory,
     convert_file,
@@ -161,10 +160,7 @@ class TestConvertFile:
     def test_convert_single_file_myst_to_quarto(self, tmp_path):
         """Convert a single .md file to .qmd format."""
         input_file = tmp_path / "doc.md"
-        input_file.write_text(
-            "# Hello\n\n"
-            "See {cite}`smith2020` for details.\n"
-        )
+        input_file.write_text("# Hello\n\nSee {cite}`smith2020` for details.\n")
         output_file = tmp_path / "output" / "doc.qmd"
         os.makedirs(tmp_path / "output", exist_ok=True)
 
@@ -182,10 +178,7 @@ class TestConvertFile:
     def test_convert_single_file_quarto_to_myst(self, tmp_path):
         """Convert a single .qmd file to .md format."""
         input_file = tmp_path / "doc.qmd"
-        input_file.write_text(
-            "# Hello\n\n"
-            "See [@smith2020] for details.\n"
-        )
+        input_file.write_text("# Hello\n\nSee [@smith2020] for details.\n")
         output_file = tmp_path / "output" / "doc.md"
         os.makedirs(tmp_path / "output", exist_ok=True)
 
@@ -218,18 +211,11 @@ class TestConvertFile:
         """Frontmatter is transformed during conversion."""
         input_file = tmp_path / "doc.md"
         input_file.write_text(
-            "---\n"
-            "title: My Doc\n"
-            "kernelspec:\n"
-            "  name: python3\n"
-            "---\n\n"
-            "# Content\n"
+            "---\ntitle: My Doc\nkernelspec:\n  name: python3\n---\n\n# Content\n"
         )
         output_file = tmp_path / "doc.qmd"
 
-        result = convert_file(
-            str(input_file), str(output_file), Direction.MYST_TO_QUARTO
-        )
+        convert_file(str(input_file), str(output_file), Direction.MYST_TO_QUARTO)
 
         content = output_file.read_text()
         assert "jupyter:" in content
@@ -266,14 +252,18 @@ class TestConvertDirectory:
 
         assert os.path.isdir(output_dir)
         # Should have results for the markdown files
-        md_results = [r for r in results if not r.skipped and r.output_path and r.output_path.endswith(".qmd")]
+        md_results = [
+            r
+            for r in results
+            if not r.skipped and r.output_path and r.output_path.endswith(".qmd")
+        ]
         assert len(md_results) >= 2  # intro.qmd, methods.qmd
 
     def test_config_file_conversion(self, myst_project, tmp_path):
         """myst.yml is converted to _quarto.yml during directory conversion."""
         output_dir = tmp_path / "output"
 
-        results = convert_directory(
+        convert_directory(
             str(myst_project),
             str(output_dir),
             Direction.MYST_TO_QUARTO,
@@ -290,7 +280,7 @@ class TestConvertDirectory:
         """_quarto.yml is converted to myst.yml during directory conversion."""
         output_dir = tmp_path / "output"
 
-        results = convert_directory(
+        convert_directory(
             str(quarto_project),
             str(output_dir),
             Direction.QUARTO_TO_MYST,
@@ -329,7 +319,9 @@ class TestConvertDirectory:
         )
 
         # Check that output files have .qmd extension
-        md_results = [r for r in results if r.output_path and r.output_path.endswith(".qmd")]
+        md_results = [
+            r for r in results if r.output_path and r.output_path.endswith(".qmd")
+        ]
         assert len(md_results) >= 2
 
         # No .md files should exist in the output (except possibly config-related)
@@ -348,15 +340,17 @@ class TestConvertDirectory:
             Direction.QUARTO_TO_MYST,
         )
 
-        md_results = [r for r in results if r.output_path and r.output_path.endswith(".md")]
+        md_results = [
+            r for r in results if r.output_path and r.output_path.endswith(".md")
+        ]
         assert len(md_results) >= 2
 
     def test_in_place_modifies_source(self, myst_project):
         """--in-place overwrites source files."""
         intro_path = myst_project / "intro.md"
-        original_content = intro_path.read_text()
+        intro_path.read_text()
 
-        results = convert_directory(
+        convert_directory(
             str(myst_project),
             None,
             Direction.MYST_TO_QUARTO,
@@ -373,7 +367,7 @@ class TestConvertDirectory:
         """--config-only only converts config files, not markdown."""
         output_dir = tmp_path / "output"
 
-        results = convert_directory(
+        convert_directory(
             str(myst_project),
             str(output_dir),
             Direction.MYST_TO_QUARTO,
@@ -390,7 +384,7 @@ class TestConvertDirectory:
         """--no-config skips config conversion."""
         output_dir = tmp_path / "output"
 
-        results = convert_directory(
+        convert_directory(
             str(myst_project),
             str(output_dir),
             Direction.MYST_TO_QUARTO,
@@ -406,7 +400,7 @@ class TestConvertDirectory:
         """--dry-run does not write any files."""
         output_dir = tmp_path / "output"
 
-        results = convert_directory(
+        convert_directory(
             str(myst_project),
             str(output_dir),
             Direction.MYST_TO_QUARTO,
@@ -421,7 +415,7 @@ class TestConvertDirectory:
 
     def test_default_output_dir(self, myst_project):
         """When no output or in-place, default output dir is created."""
-        results = convert_directory(
+        convert_directory(
             str(myst_project),
             None,  # no output dir specified
             Direction.MYST_TO_QUARTO,
@@ -524,9 +518,7 @@ class TestCLIOptions:
         output_dir = tmp_path / "custom_output"
 
         runner = CliRunner()
-        result = runner.invoke(
-            myst2quarto, [str(myst_project), "-o", str(output_dir)]
-        )
+        result = runner.invoke(myst2quarto, [str(myst_project), "-o", str(output_dir)])
 
         assert result.exit_code == 0, f"CLI failed: {result.output}"
         assert output_dir.exists()

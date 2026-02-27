@@ -423,14 +423,7 @@ class TestTableTransform:
         assert ": My Table Caption {#tbl-data}" in result
 
     def test_table_without_name(self):
-        text = (
-            "```{table} Caption Only\n"
-            "\n"
-            "| X |\n"
-            "|---|\n"
-            "| 1 |\n"
-            "```"
-        )
+        text = "```{table} Caption Only\n\n| X |\n|---|\n| 1 |\n```"
         result = convert_myst_to_quarto(text)
         assert "| X |" in result
         assert ": Caption Only" in result
@@ -479,7 +472,11 @@ class TestUnknownDirectiveTransform:
         text = "```{unknown-thing}\nSome content.\n```"
         result = convert_myst_to_quarto(text)
         # Should include a warning comment
-        assert "<!-- WARNING" in result or "<!-- mystquarto" in result.lower() or "unknown" in result.lower()
+        assert (
+            "<!-- WARNING" in result
+            or "<!-- mystquarto" in result.lower()
+            or "unknown" in result.lower()
+        )
         assert "Some content." in result
 
 

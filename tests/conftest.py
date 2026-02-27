@@ -1,6 +1,5 @@
 """Shared test fixtures for mystquarto tests."""
 
-import os
 import pytest
 import yaml
 
@@ -50,10 +49,7 @@ def myst_project(tmp_path):
     subdir = tmp_path / "chapters"
     subdir.mkdir()
     chapter = subdir / "chapter1.md"
-    chapter.write_text(
-        "# Chapter 1\n\n"
-        "Content of chapter 1.\n"
-    )
+    chapter.write_text("# Chapter 1\n\nContent of chapter 1.\n")
 
     return tmp_path
 

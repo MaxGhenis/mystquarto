@@ -395,12 +395,12 @@ def _transform_mermaid(frame: DirectiveFrame) -> list[str]:
 
 def _transform_unknown(frame: DirectiveFrame) -> list[str]:
     """Pass unknown directive through with a warning comment."""
-    lines = [
-        f"<!-- WARNING: unknown MyST directive '{frame.name}' -->"
-    ]
+    lines = [f"<!-- WARNING: unknown MyST directive '{frame.name}' -->"]
     # Reconstruct original-ish fence
     fence = frame.fence_char * frame.fence_count
-    lines.append(f"{fence}{{{frame.name}}}" + (f" {frame.argument}" if frame.argument else ""))
+    lines.append(
+        f"{fence}{{{frame.name}}}" + (f" {frame.argument}" if frame.argument else "")
+    )
     for key, val in frame.options.items():
         lines.append(f":{key}: {val}")
     if frame.body_lines:

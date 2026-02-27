@@ -8,13 +8,9 @@ from dataclasses import dataclass, field
 
 # Regex patterns for directive fence detection
 # Backtick open: ```{directive-name} optional-argument
-BACKTICK_OPEN_RE = re.compile(
-    r"^(\s*)(`{3,})\{(\w[\w-]*)\}\s*(.*)$"
-)
+BACKTICK_OPEN_RE = re.compile(r"^(\s*)(`{3,})\{(\w[\w-]*)\}\s*(.*)$")
 # Colon open: :::{directive-name} optional-argument
-COLON_OPEN_RE = re.compile(
-    r"^(\s*)(:{3,})\{(\w[\w-]*)\}\s*(.*)$"
-)
+COLON_OPEN_RE = re.compile(r"^(\s*)(:{3,})\{(\w[\w-]*)\}\s*(.*)$")
 # Option line: :key: value (must appear right after opening fence)
 OPTION_RE = re.compile(r"^:(\w[\w-]*):\s*(.*)$")
 
@@ -173,9 +169,7 @@ class Scanner:
                     i += 1
                     continue
                 # Also check opening fences with language like ```python
-                regular_fence_m2 = re.match(
-                    r"^(\s*)(`{3,}|~{3,})(\w+)\s*$", line
-                )
+                regular_fence_m2 = re.match(r"^(\s*)(`{3,}|~{3,})(\w+)\s*$", line)
                 if regular_fence_m2:
                     regular_fence_indent = len(regular_fence_m2.group(1))
                     regular_fence_char = regular_fence_m2.group(2)[0]

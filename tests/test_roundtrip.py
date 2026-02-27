@@ -30,7 +30,7 @@ class TestQuartoCodeCell:
         assert "```{code-cell} r" in result
 
     def test_quarto_code_cell_julia(self):
-        text = "```{julia}\nprintln(\"hi\")\n```"
+        text = '```{julia}\nprintln("hi")\n```'
         result = convert_quarto_to_myst(text)
         assert "```{code-cell} julia" in result
 
@@ -136,15 +136,7 @@ class TestQuartoPanelTabset:
     """Test ::: {.panel-tabset} -> tab-set/tab-item."""
 
     def test_panel_tabset(self):
-        text = (
-            "::: {.panel-tabset}\n"
-            "## Tab A\n"
-            "Content A\n"
-            "\n"
-            "## Tab B\n"
-            "Content B\n"
-            ":::\n"
-        )
+        text = "::: {.panel-tabset}\n## Tab A\nContent A\n\n## Tab B\nContent B\n:::\n"
         result = convert_quarto_to_myst(text)
         assert "tab-set" in result
         assert "tab-item" in result
@@ -526,12 +518,7 @@ class TestQuartoTableWithLabel:
     """Test table caption with {#tbl-id} -> table directive."""
 
     def test_table_with_label(self):
-        text = (
-            "| A | B |\n"
-            "|---|---|\n"
-            "| 1 | 2 |\n"
-            ": My Table Caption {#tbl-data}\n"
-        )
+        text = "| A | B |\n|---|---|\n| 1 | 2 |\n: My Table Caption {#tbl-data}\n"
         result = convert_quarto_to_myst(text)
         assert "```{table} My Table Caption" in result
         assert ":name: tbl-data" in result

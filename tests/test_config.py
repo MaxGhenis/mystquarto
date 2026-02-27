@@ -5,7 +5,6 @@ from __future__ import annotations
 import os
 import textwrap
 
-import pytest
 import yaml
 
 from mystquarto.config import (
@@ -531,7 +530,10 @@ class TestRemoveMystOnlyFields:
     def test_abbreviations_removed(self):
         fm = {
             "title": "Paper",
-            "abbreviations": {"ML": "Machine Learning", "AI": "Artificial Intelligence"},
+            "abbreviations": {
+                "ML": "Machine Learning",
+                "AI": "Artificial Intelligence",
+            },
         }
         result = myst_to_quarto_frontmatter(fm)
         assert "abbreviations" not in result
