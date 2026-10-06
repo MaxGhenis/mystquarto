@@ -55,7 +55,9 @@ _TAG_MAP = {
 
 
 def _replace_eval(m: re.Match) -> str:
-    return f"`{{python}} {m.group(1)}`"
+    # Use concatenation, not an f-string, so braces in m.group(1) are never
+    # doubled.  .qmd output is plain text, not a Python format template.
+    return "`{python} " + m.group(1) + "`"
 
 
 def _replace_cite_t(m: re.Match) -> str:
